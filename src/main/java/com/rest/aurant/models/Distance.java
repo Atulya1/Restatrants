@@ -2,7 +2,7 @@ package com.rest.aurant.models;
 
 import java.util.UUID;
 
-public class Distance {
+public class Distance implements Comparable<Distance> {
 	
 	private String distanceId;
 	private Location beginningLocation;
@@ -50,8 +50,18 @@ public class Distance {
 	}
 	@Override
 	public String toString() {
-		return "Distance [beginningLocation=" + beginningLocation + ", endLocation=" + endLocation
-				+ ", shortestDistance=" + shortestDistance + ", carDistance=" + carDistance + "]";
+		return "beginningLocation=" + beginningLocation.getLocationName() + ", endLocation=" + endLocation.getLocationName()
+				+ ", shortestDistance=" + shortestDistance + ", carDistance=" + carDistance ;
 	}
+	@Override
+	public int compareTo(Distance o) {
+		if(this.shortestDistance == o.shortestDistance)  
+			return 0;  
+		else if(this.shortestDistance > o.shortestDistance)  
+			return 1;  
+		else  
+			return -1;  
+	}
+	
 	
 }

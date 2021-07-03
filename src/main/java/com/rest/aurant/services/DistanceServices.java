@@ -4,13 +4,14 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
+import com.rest.aurant.models.CompareDistanceByCar;
 import com.rest.aurant.models.Distance;
 import com.rest.aurant.models.Location;
 import com.rest.aurant.repository.DistanceRepository;
 import com.rest.aurant.repository.LocationRepository;
 @Service
 public class DistanceServices {
-	
+	Random random = new Random();
 	public double compareStraightDistance(Location from, Location to) {
 		double fromLatitude = Double.parseDouble(from.getLatitude());
 		double fromLongitude = Double.parseDouble(from.getLongitude());
@@ -25,8 +26,8 @@ public class DistanceServices {
 		return distance;
 		
 	}
-	public double compareCarDistance(Location from, Location to) {
-		return compareStraightDistance(from, to) + 1.5;
+	private double compareCarDistance(Location from, Location to) {
+		return compareStraightDistance(from, to) + random.nextInt(2);
 	}
 	private double degreeToRadian(double deg) {
 		  return (deg * Math.PI / 180.0);
@@ -35,13 +36,44 @@ public class DistanceServices {
 		  return (rad * 180.0 / Math.PI);
 	}
 	
-	public void getDistanceBetweenMyLocationAndRestaurants() {
+	public String getDistanceBetweenMyLocationAndRestaurants() {
 		for (Map.Entry<String, Location> location : LocationRepository.locations.entrySet()) {
-	        Distance distance = new Distance(LocationRepository.myLocation,location.getValue(),this.compareCarDistance(LocationRepository.myLocation,location.getValue()),this.compareCarDistance(LocationRepository.myLocation,location.getValue()));
-	        DistanceRepository.comparativeDistance.put(distance.getDistanceId(), distance);
+	        Distance distance = new Distance(LocationRepository.myLocation,location.getValue(),compareStraightDistance(LocationRepository.myLocation,location.getValue()),compareCarDistance(LocationRepository.myLocation,location.getValue()));
+	   
+	        DistanceRepository.comparativeDistance.putIfAbsent(location.getKey(), distance);
 	    }
+		return getRestaurantByShortestDistance().toString();
 	}
 	
-	public void getNearAndFarLocations() {
+	public String getShortestNearAndFarLocations() {
+		getDistanceBetweenMyLocationAndRestaurants();
+		DistanceRepository.nearAndFarRestaurant.put("Nearest", getRestaurantByShortestDistance().get(0));
+		DistanceRepository.nearAndFarRestaurant.put("Farthest", getRestaurantByShortestDistance().get(getRestaurantByShortestDistance().size()-1));
+		return DistanceRepository.nearAndFarRestaurant.toString();
+		
+	}
+	public String getNearestAndFarthestRestaurantByCar() {
+		getDistanceBetweenMyLocationAndRestaurants();
+		DistanceRepository.nearAndFarRestaurantByCar.put("Nearest", getRestaurantByCarDistance().get(0));
+		DistanceRepository.nearAndFarRestaurantByCar.put("Farthest", getRestaurantByCarDistance().get(getRestaurantByCarDistance().size()-1));
+		return DistanceRepository.nearAndFarRestaurantByCar.toString();
+		
+	}
+	private List<Distance> getRestaurantByShortestDistance() {
+		List<Distance> distance = new ArrayList<>();
+		for (Map.Entry<String, Distance> d : DistanceRepository.comparativeDistance.entrySet()) {
+			distance.add(d.getValue());
+		}
+		Collections.sort(distance);
+		return distance;
+	}
+	private List<Distance> getRestaurantByCarDistance() {
+		List<Distance> distance = new ArrayList<>();
+		for (Map.Entry<String, Distance> d : DistanceRepository.comparativeDistance.entrySet()) {
+			distance.add(d.getValue());
+		}
+		
+		Collections.sort(distance, new CompareDistanceByCar());
+		return distance;
 	}
 }
