@@ -4,8 +4,10 @@
 Apis- 
 
 Get -
-http://localhost:8080/location/getMyLocation
-http://localhost:8080/location/getNearByRestaurantLocation
-Post - 
-http://localhost:8080/location/saveMyLocation
-http://localhost:8080/location/saveNearByRestaurantLocation
+1. http://localhost:8080/location/getMyLocation
+2. http://localhost:8080/location/getNearByRestaurantLocation
+
+
+Post -
+1. http://localhost:8080/location/saveMyLocation
+2. http://localhost:8080/location/saveNearByRestaurantLocation
