@@ -15,8 +15,8 @@ public class DistanceController {
 	@Autowired
 	private DistanceServices distanceServices;
 	
-	@GetMapping("/getAllRestaurantNearBy")
-	public ResponseClass getAllRestaurantNearBy() {
+	@GetMapping("/getAllRestaurantNearBySortedByDistance")
+	public ResponseClass getAllRestaurantNearBySortedByDistance() {
 		String status = distanceServices.getDistanceBetweenMyLocationAndRestaurants();
 		return new ResponseClass(200, status);
 	}
