@@ -5,6 +5,7 @@ Mode of Transportation can be "by Walking", "by Car", "by bike", "public transpo
 
 For the problem statement where I need to find the shorted alternate route, it can only be implemented with proper data set which can be obtained from the Google Maps API for which I don't have access for the time being.   
 
+Solutions for the required problem statements are implemented inside CharlieServices and CharlieController.
 
 Apis- 
 
