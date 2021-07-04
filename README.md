@@ -24,3 +24,7 @@ Get -
 Post -
 1. http://localhost:8080/location/saveMyLocation
 2. http://localhost:8080/location/saveNearByRestaurantLocation
+
+
+Data Payload files are in - "Restaurants/src/main/resources/" folder
+
