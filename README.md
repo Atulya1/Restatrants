@@ -1,4 +1,4 @@
-# Restatrants
+# Restaurants
 
 
 Mode of Transportation can be "by Walking", "by Car", "by bike", "public transportation" etc. All these modes can take different routes and can have different comparative distance and respective time taken to travel. In order to make it more Object oriented, I would make another class where I will take that into account. In future, we can add modes of transportation if required. 
